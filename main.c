@@ -31,30 +31,7 @@ typedef struct {
 	int** a; 
 }Graph;
 
-/*functie pt debugging
-void afisareRouters(Router* array, int nr_routers){
-	int i;
-	PC* node;
-	for(i = 0; i < nr_routers; i++){
-		printf("%s\n%s\n%d\n", array[i].name, array[i].IP, array[i].nr_pc);
-		for(node = array[i].list; node != NULL; node = node->next){
-			printf("%s\n%s\n%d\n", node->name, node->IP, node->state);
-		}
-	}
-}
 
-//functie pt debugging
-void afisareMatrix(Graph* graf){
-	int i, j;
-	for(i = 0; i < graf->V; i ++){
-		for(j = 0; j < graf->V; j++){
-			printf("%d ", graf->a[i][j]);
-		}
-		printf("\n");
-	}
-	printf("\n");
-}
-*/
 Router* readRouters(FILE* f){
 	int n, i, nr, state, j;
 	char name[15];
@@ -343,8 +320,7 @@ void ping(FILE *f, char* IP1, char* IP2, Router* array, Graph* graf){
 }
 
 //afisare output pt functia trace
-//aici da seg fault din cauza indicelui j dat ca parametru
-//nu e acces la zona de memorie in care e j si parent[j]
+
 void printPath(FILE *f, int* parent, int j, Router* array){
     if (parent[j] == -1)
         return;
@@ -396,7 +372,7 @@ int* path_dijkstra(Graph* graf, int src){
 }
 
 void trace(FILE *f, char* IP1, char* IP2, Router* array, Graph* graf){
-	// Segmentation fault aici -> Pica pe testele 6, 7, 10
+	
 	 
 	int* parent; 
 	int i, source, destination;
@@ -419,26 +395,22 @@ void trace(FILE *f, char* IP1, char* IP2, Router* array, Graph* graf){
 		}
 	}
 	
-	//daca doua routere nu au conexiune intre ele, distanta va ramane MAX si afisam un rand gol
+
 	int* dist = dist_dijkstra(graf, source);
 	if(dist[destination] == MAX){
 		fprintf(f, "\n");
 		return;
 	}
 	
-	//daca exista conexiune, afisam nodul sursa + nodurile vizitate
+
 	fprintf(f, "%s ", array[source].IP);
-	/* Din cauza functiei printPath apare Segmentation Fault
-	 * se pare ca indicele destination nu mai poate fi accesat
-	 * si nici parent[destination], ofc
-	 * idk why, tho
-	 */
+
 	printPath(f, parent, destination, array);
 	fprintf(f, "\n");
 		
 }
 
-//functie pentru parsarea comenzilor
+
 void readTasks(FILE* f_in, FILE* f_out, Router* array, Graph* graf){
 	int n, d, i;
 	char cerinta[10], var1[15], var2[15];
