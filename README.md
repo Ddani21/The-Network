@@ -1,7 +1,4 @@
 # The-Network
-SDA - TEMA2 - The Network
-Duduleanu Daniel-Cristian
-323AB
 
 
 Structuri:
